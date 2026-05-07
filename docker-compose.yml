@@ -11,6 +11,8 @@ x-airflow-common: &airflow-common
     AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth'
     _PIP_ADDITIONAL_REQUIREMENTS: 'kafka-python pymongo requests beautifulsoup4 streamlit pandas'
     PYTHONPATH: /opt/airflow/scripts
+    KAFKA_BROKER: ${KAFKA_BROKER:-kafka:29092}
+    MONGO_HOST: ${MONGO_HOST:-mongodb:27017}
   volumes:
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
@@ -139,6 +141,9 @@ services:
       context: ./dashboard
     ports:
       - "8501:8501"
+    environment:
+      KAFKA_BROKER: ${KAFKA_BROKER:-kafka:29092}
+      MONGO_HOST: ${MONGO_HOST:-mongodb:27017}
     volumes:
       - ./dashboard:/app
     depends_on:
